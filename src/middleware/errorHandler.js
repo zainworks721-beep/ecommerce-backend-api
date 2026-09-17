@@ -1,0 +1,3 @@
+export let errorHandler = (err, req, res, next) => {
+    res.status(500).json({ status: '500', message: 'Internal server error' });
+}

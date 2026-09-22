@@ -17,11 +17,14 @@ A RESTful E-Commerce Backend API built with **Node.js** and **Express.js**.
 - Node.js
 - Express.js
 - JavaScript (ES Modules)
+- MongoDB
+- Mongoose
 - Postman
 
 ## API Endpoints
 
 ### Users
+
 - GET `/api/users`
 - GET `/api/users/:id`
 - POST `/api/users`
@@ -29,6 +32,7 @@ A RESTful E-Commerce Backend API built with **Node.js** and **Express.js**.
 - DELETE `/api/users/:id`
 
 ### Products
+
 - GET `/api/products`
 - GET `/api/products/:id`
 - POST `/api/products`

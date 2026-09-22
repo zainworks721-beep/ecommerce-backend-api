@@ -15,5 +15,5 @@ const middleware= (req, res, next) => {
     }
 }
 
-export { middleware };
+export {middleware };
 

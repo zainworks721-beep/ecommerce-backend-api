@@ -2,7 +2,9 @@ import express from 'express';
 import userRoutes from './routes/userRoutes/userApis.js';
 import productRoutes from './routes/productRoutes/productApis.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import setupMongoDB from './config/setupMongoDB.js';
 
+setupMongoDB();
 
 const app = express();
 const runningPort = 5000;

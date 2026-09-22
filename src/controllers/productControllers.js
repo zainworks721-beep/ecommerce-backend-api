@@ -1,19 +1,20 @@
 import product from '../data/products.js';
+import Product from '../model/product.model.js'
 
 
-const getProducts = (req, res,next) => {
+const getProducts = async (req, res, next) => {
     try {
-        const products = product;
+        const products = await Product.find();
         res.status(200).json({ status: '200', total: products.length, message: 'Products fetched successfully', data: products, });
     } catch (error) {
         next(error);
     }
 }
 
-const getProductById = (req, res,next) => {
+const getProductById = async (req, res, next) => {
     try {
-        const productId = parseInt(req.params.id);
-        const productById = product.find(p => p.id === productId);
+        const productId = req.params.id;
+        const productById = await Product.findById(productId)
 
         if (!productById) {
             res.status(404).json({ status: '404', message: 'Product not found' });
@@ -26,57 +27,58 @@ const getProductById = (req, res,next) => {
     }
 }
 
-const createProduct = (req, res,next) => {
+const createProduct = async (req, res, next) => {
     try {
         const { name, price, category, stock } = req.body;
         const newProduct = {
-            id: product.length + 1,
             name,
             price,
             category,
             stock
         }
 
-        product.push(newProduct);
-        res.status(201).json({ status: '201', message: 'Product created successfully', data: newProduct });
+        let product = await Product.create(newProduct)
 
-    } catch (error) {
-            next(error);
-    }
-}
-
-const updateProduct = (req, res,next) => {
-    try {
-        const productId = parseInt(req.params.id);
-        const productById = product.find(p => p.id === productId);
-        const productIndex = product.findIndex(p => p.id === productId);
-
-        if (!productById) {
-            res.status(404).json({ status: '404', message: 'Product not found' });
-            return
-        } else {
-            const { name, price, category, stock } = req.body;
-            product.splice(productIndex, 1, { ...productById, ...{ name, price, category, stock } });
-            res.status(200).json({ status: '200', data: product[productIndex], message: 'Product updated successfully' });
+        if (product) {
+            res.status(201).json({ status: '201', message: 'Product created successfully', data: product });
         }
+
+
     } catch (error) {
         next(error);
     }
 }
 
-const delProduct = (req, res,next) => {
-    const productId = parseInt(req.params.id);
-    const productIndex = product.findIndex(p => p.id === productId);
+const updateProduct = async (req, res, next) => {
     try {
+        const productId = req.params.id
 
-        if (productIndex === -1) {
+        const { name, price, category, stock } = req.body;
+        let updatedProducts = await Product.findByIdAndUpdate(productId, { name, price, category, stock }, { new: true })
+        if (!updatedProducts) {
             res.status(404).json({ status: '404', message: 'Product not found' });
             return
         }
+        res.status(200).json({ status: '200', data: updatedProducts, message: 'Product updated successfully' });
+    }
+    catch (error) {
+        next(error);
+    }
+}
 
-        product.splice(productIndex, 1);
-        res.status(200).json({ status: "200", "message": "Product deleted successfully" });
+const delProduct = async (req, res, next) => {
 
+    try {
+    const productId = req.params.id
+    const productIndex = await Product.findByIdAndDelete(productId)
+
+    if(!productIndex) {
+        res.status(404).json({ status: '404', message: 'Product not found' });
+        return;
+    }
+    if(productIndex) {
+        res.status(200).json({ status: '200', message: 'Product deleted successfully' });
+    }
 
     } catch (error) {
         next(error);

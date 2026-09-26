@@ -1,4 +1,4 @@
-import user from '../data/user.js';
+
 import User from '../model/user.model.js';
 
 

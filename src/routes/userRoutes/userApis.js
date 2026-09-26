@@ -7,7 +7,7 @@ import {
     delUser
 } from '../../controllers/userControllers.js';
 
-import { middleware } from '../../middleware/apiKey.js';
+import  middleware  from '../../middleware/middleware.js';
 import { validateUser } from '../../middleware/validation.js'
 
 

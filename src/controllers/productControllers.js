@@ -1,4 +1,4 @@
-import product from '../data/products.js';
+
 import Product from '../model/product.model.js'
 
 

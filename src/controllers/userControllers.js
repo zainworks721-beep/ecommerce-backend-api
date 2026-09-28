@@ -30,7 +30,7 @@ const getUserById = async (req, res, next) => {
         if (userById) {
             res.status(200).json({ status: '200', data: userById, message: 'User fetched successfully' });
         }
-      
+
     } catch (error) {
         next(error);
     }
@@ -62,8 +62,21 @@ const updateUser = async (req, res, next) => {
     try {
 
         const userId = req.params.id;
-        const { username, email, password } = req.body;
-        const updatedUser = await User.findByIdAndUpdate(userId, { username, email, password },
+        const { username, email, } = req.body;
+
+        const updateData = {}
+
+        if (username !== undefined && username.trim() !== "") updateData.username = username.trim();
+        if (email !== undefined && email.trim() !== "") updateData.email = email.trim();
+
+        if (Object.keys(updateData).length === 0) {
+            res.status(400).json({
+                status: '400',
+                message: 'Please provide at least one valid field to update (username or email).'
+            });
+            return;
+        }
+        const updatedUser = await User.findByIdAndUpdate(userId, updateData,
             { new: true });
 
         if (!updatedUser) {

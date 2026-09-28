@@ -47,10 +47,10 @@ const loginController = async (req, res, next) => {
         }
 
         let loginUserInfo = await User.findById(findUser._id).select("-password")
-       
+
 
         let token = () => {
-            return Jwt.sign({ id: loginUserInfo._id }, process.env.JWT_SECRET,)
+            return Jwt.sign({ id: loginUserInfo._id, role: loginUserInfo.role }, process.env.JWT_SECRET,)
         }
 
         const myToken = token()
@@ -59,7 +59,7 @@ const loginController = async (req, res, next) => {
         res.status(200).json({
             status: "200", message: "Login successful",
             user: loginUserInfo,
-            loginToken : myToken
+            loginToken: myToken
         });
 
     } catch (error) {
